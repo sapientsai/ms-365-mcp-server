@@ -1,7 +1,7 @@
-## ms365-mcp-server
+## microsoft365-mcp-server
 
-[![Node.js CI](https://github.com/sapientsai/ms365-mcp-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/sapientsai/ms365-mcp-server/actions/workflows/node.js.yml)
-[![npm version](https://img.shields.io/npm/v/ms365-mcp-server.svg)](https://www.npmjs.com/package/ms365-mcp-server)
+[![Node.js CI](https://github.com/sapientsai/microsoft365-mcp-server/actions/workflows/node.js.yml/badge.svg)](https://github.com/sapientsai/microsoft365-mcp-server/actions/workflows/node.js.yml)
+[![npm version](https://img.shields.io/npm/v/microsoft365-mcp-server.svg)](https://www.npmjs.com/package/microsoft365-mcp-server)
 
 A Model Context Protocol (MCP) server for Microsoft 365 — manage email, calendar, contacts, files, Teams, Planner, OneNote, To Do, users, and groups via Microsoft Graph API.
 
@@ -18,10 +18,10 @@ A Model Context Protocol (MCP) server for Microsoft 365 — manage email, calend
 
 ```bash
 # Install globally
-npm install -g ms365-mcp-server
+npm install -g microsoft365-mcp-server
 
 # Or run directly
-npx ms365-mcp-server
+npx microsoft365-mcp-server
 ```
 
 ### Claude Desktop / VS Code Configuration
@@ -33,7 +33,7 @@ Add to your `claude_desktop_config.json` or MCP settings:
   "mcpServers": {
     "ms-365": {
       "command": "npx",
-      "args": ["-y", "ms365-mcp-server"],
+      "args": ["-y", "microsoft365-mcp-server"],
       "env": {
         "MS365_AUTH_MODE": "interactive",
         "MS365_CLIENT_ID": "your-azure-app-client-id",
