@@ -4,6 +4,7 @@ export type ToolDomain =
   | "calendar"
   | "contacts"
   | "files"
+  | "chats"
   | "teams"
   | "users"
   | "groups"
@@ -21,7 +22,7 @@ export type ToolMeta = {
 
 export const PRESETS: Record<string, ReadonlyArray<ToolDomain>> = {
   personal: ["mail", "calendar", "contacts", "todo", "files", "onenote"],
-  collaboration: ["teams", "planner", "groups"],
+  collaboration: ["chats", "teams", "planner", "groups"],
   productivity: ["mail", "calendar", "todo"],
   all: [
     "auth",
@@ -29,6 +30,7 @@ export const PRESETS: Record<string, ReadonlyArray<ToolDomain>> = {
     "calendar",
     "contacts",
     "files",
+    "chats",
     "teams",
     "users",
     "groups",
@@ -68,6 +70,10 @@ export const TOOL_METADATA: ReadonlyArray<ToolMeta> = [
   { name: "search_files", domain: "files", readOnly: true, orgOnly: false },
   { name: "download_file", domain: "files", readOnly: true, orgOnly: false },
   { name: "create_folder", domain: "files", readOnly: false, orgOnly: false },
+  // Chats
+  { name: "list_chats", domain: "chats", readOnly: true, orgOnly: true },
+  { name: "list_chat_messages", domain: "chats", readOnly: true, orgOnly: true },
+  { name: "send_chat_message", domain: "chats", readOnly: false, orgOnly: true },
   // Teams
   { name: "list_teams", domain: "teams", readOnly: true, orgOnly: true },
   { name: "list_channels", domain: "teams", readOnly: true, orgOnly: true },

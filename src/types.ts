@@ -168,6 +168,26 @@ export type GraphChannelMessage = {
   readonly createdDateTime?: string
 }
 
+export type GraphChat = {
+  readonly id: string
+  readonly topic?: string
+  readonly chatType?: string
+  readonly createdDateTime?: string
+  readonly lastUpdatedDateTime?: string
+  readonly members?: ReadonlyArray<{
+    readonly displayName?: string
+    readonly userId?: string
+  }>
+}
+
+export type GraphChatMessage = {
+  readonly id: string
+  readonly body?: { readonly contentType?: string; readonly content?: string }
+  readonly from?: { readonly user?: { readonly displayName?: string; readonly id?: string } }
+  readonly createdDateTime?: string
+  readonly messageType?: string
+}
+
 export type GraphGroup = {
   readonly id: string
   readonly displayName?: string

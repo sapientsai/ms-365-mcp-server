@@ -3,6 +3,8 @@ import { Option } from "functype"
 import type {
   GraphChannel,
   GraphChannelMessage,
+  GraphChat,
+  GraphChatMessage,
   GraphContact,
   GraphDriveItem,
   GraphEvent,
@@ -420,6 +422,32 @@ export const formatTodoTaskDetail = (task: GraphTodoTask): string => {
 ## Body
 ${body}`
 }
+
+// Chats
+export const formatChatSummary = (chat: GraphChat): string => {
+  const topic = chat.topic ?? chat.chatType ?? "Chat"
+  return `- **${topic}** (${chat.chatType ?? "unknown"}, ID: ${chat.id})`
+}
+
+export const formatChatList = (chats: ReadonlyArray<GraphChat>): string =>
+  chats.length === 0 ? "No chats found." : `# Chats\n\n${chats.map(formatChatSummary).join("\n")}`
+
+export const formatChatMessageSummary = (msg: GraphChatMessage): string => {
+  const from = Option(msg.from?.user?.displayName).fold(
+    () => "Unknown",
+    (v) => v,
+  )
+  const content = Option(msg.body?.content)
+    .map((c) => c.substring(0, 100) + (c.length > 100 ? "..." : ""))
+    .fold(
+      () => "",
+      (v) => v,
+    )
+  return `- **${from}** (${msg.createdDateTime ?? ""}): ${content}`
+}
+
+export const formatChatMessageList = (msgs: ReadonlyArray<GraphChatMessage>): string =>
+  msgs.length === 0 ? "No chat messages found." : `# Chat Messages\n\n${msgs.map(formatChatMessageSummary).join("\n")}`
 
 // Auth Status
 export const formatAuthStatus = (status: {

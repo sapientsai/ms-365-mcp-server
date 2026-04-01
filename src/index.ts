@@ -32,6 +32,8 @@ import {
   listAccountsTool,
   listChannelMessages,
   listChannels,
+  listChatMessages,
+  listChats,
   listContacts,
   listDriveItems,
   listEvents,
@@ -52,6 +54,7 @@ import {
   searchFiles,
   searchMessages,
   sendChannelMessage,
+  sendChatMessage,
   sendMessage,
   setAccessTokenTool,
   switchAccountTool,
@@ -444,6 +447,45 @@ const toolDefinitions: ReadonlyArray<ToolDefinition> = [
     readOnly: false,
   },
 
+  // === Chat Tools ===
+  {
+    name: "list_chats",
+    description: "List your Teams chats (1:1, group, and meeting chats)",
+    parameters: z.object({
+      top: z.number().optional().describe("Number of chats to return (default: 25)"),
+      fetch_all_pages: FETCH_ALL_PAGES_PARAM,
+    }),
+    execute: async (params) => unwrapResult(await listChats(params)),
+    domain: "chats" as const,
+    readOnly: true,
+    annotations: { readOnlyHint: true },
+  },
+  {
+    name: "list_chat_messages",
+    description: "List messages in a Teams chat",
+    parameters: z.object({
+      chat_id: z.string().describe("Chat ID"),
+      top: z.number().optional().describe("Number of messages (default: 25)"),
+      fetch_all_pages: FETCH_ALL_PAGES_PARAM,
+    }),
+    execute: async (params) => unwrapResult(await listChatMessages(params)),
+    domain: "chats" as const,
+    readOnly: true,
+    annotations: { readOnlyHint: true },
+  },
+  {
+    name: "send_chat_message",
+    description: "Send a message in a Teams chat",
+    parameters: z.object({
+      chat_id: z.string().describe("Chat ID"),
+      content: z.string().describe("Message content"),
+    }),
+    execute: async (params) => unwrapResult(await sendChatMessage(params)),
+    domain: "chats" as const,
+    readOnly: false,
+    annotations: { destructiveHint: true },
+  },
+
   // === Teams Tools ===
   {
     name: "list_teams",
@@ -825,6 +867,7 @@ const buildInstructions = (allowedTools: Set<string>): string => {
     calendar: "Calendar: List, view, create, update, and delete events",
     contacts: "Contacts: List, view, create, and search contacts",
     files: "Files: List, view, search, and download OneDrive files; create folders",
+    chats: "Chats: List Teams chats and messages; send chat messages",
     teams: "Teams: List teams, channels, and messages; send channel messages",
     users: "Users: View profiles and list users",
     groups: "Groups: List groups and group members",

@@ -8,6 +8,8 @@ import type {
   GraphApiVersion,
   GraphChannel,
   GraphChannelMessage,
+  GraphChat,
+  GraphChatMessage,
   GraphContact,
   GraphDriveItem,
   GraphEvent,
@@ -259,6 +261,18 @@ const createGraphClient = () => {
       body: { body: { content } },
     })
 
+  // Chats
+  const listChats = (odataParams?: ODataParams) =>
+    request<ODataResponse<GraphChat>>("GET", "/me/chats", { odataParams })
+
+  const listChatMessages = (chatId: string, odataParams?: ODataParams) =>
+    request<ODataResponse<GraphChatMessage>>("GET", `/chats/${chatId}/messages`, { odataParams })
+
+  const sendChatMessage = (chatId: string, content: string, contentType: string = "text") =>
+    request<GraphChatMessage>("POST", `/chats/${chatId}/messages`, {
+      body: { body: { contentType, content } },
+    })
+
   // Users & Groups
   const getMe = () => request<GraphUser>("GET", "/me")
 
@@ -348,6 +362,10 @@ const createGraphClient = () => {
     searchFiles,
     downloadFile,
     createFolder,
+    // Chats
+    listChats,
+    listChatMessages,
+    sendChatMessage,
     // Teams
     listTeams,
     listChannels,
