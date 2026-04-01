@@ -142,6 +142,40 @@ You need an Azure AD (Entra ID) app registration:
 5. Grant admin consent (for org tenants)
 6. Create a client secret (for client-secret and OAuth proxy modes)
 
+### Restricting Access to Specific Users
+
+By default, any user in your tenant can authenticate. To restrict to specific users:
+
+```bash
+# Enable user assignment requirement
+az ad sp update --id <app-id> --set appRoleAssignmentRequired=true
+
+# Assign a user
+SP_ID=$(az ad sp show --id <app-id> --query id -o tsv)
+USER_ID=$(az ad user show --id user@example.com --query id -o tsv)
+az rest --method POST \
+  --url "https://graph.microsoft.com/v1.0/servicePrincipals/${SP_ID}/appRoleAssignments" \
+  --body "{\"principalId\":\"${USER_ID}\",\"resourceId\":\"${SP_ID}\",\"appRoleId\":\"00000000-0000-0000-0000-000000000000\"}"
+```
+
+Or in Azure Portal: Enterprise Applications > your app > Users and groups > Add user.
+
+### Safety Layers
+
+| Layer                    | Protection                           | Default            |
+| ------------------------ | ------------------------------------ | ------------------ |
+| **User assignment**      | Only assigned users can authenticate | Off (enable above) |
+| **Write confirmation**   | Preview + token before any mutation  | **On**             |
+| **Tool filtering**       | Presets, read-only, org-mode gating  | All tools          |
+| **Tenant restriction**   | `MS365_TENANT_ID` locks to one org   | `common`           |
+| **M365 native recovery** | Recycle bins, version history        | Built-in           |
+
+**Recovery by domain:**
+
+- Mail, Calendar, OneDrive, SharePoint: Deleted Items / Recycle Bin (30-93 days), version history
+- Teams messages: Immutable (can't be deleted via API)
+- Contacts, Planner tasks, To Do tasks: **No native recovery** — write confirmation is critical
+
 ## Write Confirmation
 
 When `MS365_CONFIRM_WRITES=true` (the **default**), write tools don't execute immediately. Instead they return a preview with a confirmation token. The LLM must call `confirm_action` with the token to execute.
