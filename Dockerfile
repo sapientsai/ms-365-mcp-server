@@ -8,6 +8,8 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
+ENV PATH="/app/node_modules/.bin:$PATH"
+
 COPY . .
 RUN pnpm build
 
