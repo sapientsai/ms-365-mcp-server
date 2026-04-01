@@ -336,6 +336,16 @@ All list tools support `fetch_all_pages: true` to automatically follow `@odata.n
 | `MS365_CONFIRM_WRITES` | Two-step confirmation for write operations                                              | `true`           |
 | `MS365_CONFIRM_TTL_MS` | Confirmation token TTL in milliseconds                                                  | `300000` (5 min) |
 
+## Docker / Remote Deployment
+
+Deploy as a remote MCP server with per-user OAuth authentication:
+
+```bash
+docker compose up -d
+```
+
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for the full guide — Docker, Azure AD app setup, Dokploy, reverse proxy, and security configuration.
+
 ## Development
 
 ```bash

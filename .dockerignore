@@ -1,0 +1,17 @@
+node_modules
+dist
+lib
+.env
+.env.*
+!.env.example
+.git
+.github
+.claude
+.mcp.json
+*.md
+!README.md
+!DEPLOYMENT.md
+test
+coverage
+.vscode
+.idea
