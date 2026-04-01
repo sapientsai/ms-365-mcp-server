@@ -19,6 +19,9 @@ importers:
       functype:
         specifier: ^0.54.0
         version: 0.54.0
+      functype-log:
+        specifier: ^0.1.0
+        version: 0.1.0(functype@0.54.0)
       jsonwebtoken:
         specifier: ^9.0.3
         version: 9.0.3
@@ -453,6 +456,31 @@ packages:
   "@jridgewell/trace-mapping@0.3.9":
     resolution:
       { integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ== }
+
+  "@loglayer/context-manager@2.0.2":
+    resolution:
+      { integrity: sha512-IVt/iqACGw2GnucKOpyJ69MbGQSRzsArOwsTNMuOAfzm36zTphGIH4K7g7lhRvcd2jY0dZzvWA6tCqannpgXXg== }
+    engines: { node: ">=18" }
+
+  "@loglayer/log-level-manager@2.0.2":
+    resolution:
+      { integrity: sha512-hq6hjkXzrYyz0DwYUqizP0hS3jhPl5S/7U33Cd0EPbfLmDjYWzzcM0mQKUdtBi6qNX4DAPpag3oBGytB2zmghg== }
+    engines: { node: ">=18" }
+
+  "@loglayer/plugin@3.0.2":
+    resolution:
+      { integrity: sha512-ghIYpuPw/Q0jdlr7ErkaySfsSCsIigwIb1lvR5qhZrz3oEqGotDFZzhgU1YeO7BacA042ygv/xww3Ip3ROokeg== }
+    engines: { node: ">=18" }
+
+  "@loglayer/shared@4.1.0":
+    resolution:
+      { integrity: sha512-hGSWhLhMF9L7sB0rXippvKhku9D9dT8imZ5OFpa4VHAVnclY0DQ+3wIPE37rzu0QAiBbyR3/HH03Q1Cgik8zYA== }
+    engines: { node: ">=18" }
+
+  "@loglayer/transport@3.0.2":
+    resolution:
+      { integrity: sha512-5t0lj/ibQQxGPpghNta8u10zl8owU0my/i2fHF/LdcCAtpw/IHblmpKSgOzdH9XE19Ub/i0VYj0JrFrFv8/NXw== }
+    engines: { node: ">=18" }
 
   "@modelcontextprotocol/sdk@1.29.0":
     resolution:
@@ -1622,6 +1650,13 @@ packages:
     resolution:
       { integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA== }
 
+  functype-log@0.1.0:
+    resolution:
+      { integrity: sha512-8ex+D38Ybv7ZDaJoPnTdG5m2/jHP4UaQVNxsyZ9K1CIpNaAgwHItqOZDEiglnDkKOwfoy2SHYrRSKtglOitPiw== }
+    engines: { node: ">=18.17.0" }
+    peerDependencies:
+      functype: ">=0.55.0"
+
   functype-os@0.4.1:
     resolution:
       { integrity: sha512-MqzPnSCAG49Sutl7idd7WV7+0MU1PnE/U4qcijeIDRoofMsm4A6MPsKdC/Gfn3ydLlU7or/q4VlKAprmTaxE1w== }
@@ -1995,6 +2030,11 @@ packages:
   lodash.once@4.1.1:
     resolution:
       { integrity: sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg== }
+
+  loglayer@9.1.0:
+    resolution:
+      { integrity: sha512-KFCtoydUtfshszDMIEMa180MMT4jDgBz7FkkO0r3mLDzOkfqGUCbtH9DRszK/pEPrG7999FXfBsyv4DNhvmrag== }
+    engines: { node: ">=18" }
 
   lru-cache@11.2.7:
     resolution:
@@ -3155,6 +3195,24 @@ snapshots:
       "@jridgewell/resolve-uri": 3.1.2
       "@jridgewell/sourcemap-codec": 1.5.5
 
+  "@loglayer/context-manager@2.0.2":
+    dependencies:
+      "@loglayer/shared": 4.1.0
+
+  "@loglayer/log-level-manager@2.0.2":
+    dependencies:
+      "@loglayer/shared": 4.1.0
+
+  "@loglayer/plugin@3.0.2":
+    dependencies:
+      "@loglayer/shared": 4.1.0
+
+  "@loglayer/shared@4.1.0": {}
+
+  "@loglayer/transport@3.0.2":
+    dependencies:
+      "@loglayer/shared": 4.1.0
+
   "@modelcontextprotocol/sdk@1.29.0(zod@4.3.6)":
     dependencies:
       "@hono/node-server": 1.19.12(hono@4.12.9)
@@ -4102,6 +4160,11 @@ snapshots:
 
   function-bind@1.1.2: {}
 
+  functype-log@0.1.0(functype@0.54.0):
+    dependencies:
+      functype: 0.54.0
+      loglayer: 9.1.0
+
   functype-os@0.4.1(functype@0.51.0):
     dependencies:
       functype: 0.51.0
@@ -4390,6 +4453,14 @@ snapshots:
   lodash.isstring@4.0.1: {}
 
   lodash.once@4.1.1: {}
+
+  loglayer@9.1.0:
+    dependencies:
+      "@loglayer/context-manager": 2.0.2
+      "@loglayer/log-level-manager": 2.0.2
+      "@loglayer/plugin": 3.0.2
+      "@loglayer/shared": 4.1.0
+      "@loglayer/transport": 3.0.2
 
   lru-cache@11.2.7: {}
 

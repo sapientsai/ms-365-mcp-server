@@ -72,6 +72,7 @@ import {
 import type { ToolDefinition } from "./tools/tool-definitions"
 import { filterTools, type ToolFilterConfig } from "./tools/tool-registry"
 import type { AuthConfig } from "./types"
+import { auditToolCall, auditToolError, auditToolResult } from "./utils/audit"
 
 dotenv.config()
 
@@ -827,17 +828,34 @@ const wrapExecute = (tool: ToolDefinition, oauthMode: boolean): never => {
         withToken(context.session?.accessToken, () => baseFn(params))
     : (params: Record<string, unknown>) => baseFn(params)
 
-  // Layer 2: Write confirmation (wraps the OAuth-aware function)
+  // Layer 2: Audit logging (wraps the OAuth-aware function)
+  const withAudit = async (params: Record<string, unknown>, context: ExecuteContext) => {
+    auditToolCall(tool.name, params)
+    const start = Date.now()
+
+    try {
+      const result = await withOAuth(params, context)
+      auditToolResult(tool.name, true, Date.now() - start)
+      return result
+    } catch (error) {
+      auditToolError(tool.name, error instanceof Error ? error.message : String(error))
+      auditToolResult(tool.name, false, Date.now() - start)
+      throw error
+    }
+  }
+
+  // Layer 3: Write confirmation (wraps the audited function)
   if (!tool.readOnly && confirmEnabled) {
     // eslint-disable-next-line @typescript-eslint/require-await -- FastMCP requires async execute; confirmation preview is sync
     return (async (params: Record<string, unknown>, context: ExecuteContext) => {
+      auditToolCall(tool.name, params)
       const executeFn = () => withOAuth(params, context)
       const token = createPendingAction(tool.name, formatConfirmationPreview(tool.name, params, ""), executeFn)
       return formatConfirmationPreview(tool.name, params, token)
     }) as never
   }
 
-  return withOAuth as never
+  return withAudit as never
 }
 
 const registerTools = (server: FastMCP, allowedTools: Set<string>, oauthMode: boolean) => {
