@@ -29,6 +29,7 @@ COPY --from=builder /app/dist ./dist
 ENV NODE_ENV=production
 ENV PORT=8080
 ENV TRANSPORT_TYPE=httpStream
+ENV FASTMCP_HOST=0.0.0.0
 
 EXPOSE 8080
 
