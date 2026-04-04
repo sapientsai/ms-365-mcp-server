@@ -11,6 +11,7 @@ import type {
   GraphChat,
   GraphChatMessage,
   GraphContact,
+  GraphDrive,
   GraphDriveItem,
   GraphEvent,
   GraphGroup,
@@ -20,6 +21,7 @@ import type {
   GraphPlan,
   GraphPlannerTask,
   GraphSection,
+  GraphSite,
   GraphTodoList,
   GraphTodoTask,
   GraphUser,
@@ -279,6 +281,53 @@ const createGraphClient = () => {
       body: { name, folder: {}, "@microsoft.graph.conflictBehavior": "rename" },
     })
 
+  // SharePoint Sites
+  const listFollowedSites = () => request<ODataResponse<GraphSite>>("GET", "/me/followedSites")
+
+  const searchSites = (query: string) =>
+    request<ODataResponse<GraphSite>>("GET", `/sites?search=${encodeURIComponent(query)}`)
+
+  const getSite = (siteId: string) => request<GraphSite>("GET", `/sites/${siteId}`)
+
+  const listSiteDrives = (siteId: string) => request<ODataResponse<GraphDrive>>("GET", `/sites/${siteId}/drives`)
+
+  const listSiteDriveItems = (siteId: string, driveId?: string, folderId?: string) => {
+    if (driveId && folderId) {
+      return request<ODataResponse<GraphDriveItem>>(
+        "GET",
+        `/sites/${siteId}/drives/${driveId}/items/${folderId}/children`,
+      )
+    }
+    if (driveId) {
+      return request<ODataResponse<GraphDriveItem>>("GET", `/sites/${siteId}/drives/${driveId}/root/children`)
+    }
+    return request<ODataResponse<GraphDriveItem>>("GET", `/sites/${siteId}/drive/root/children`)
+  }
+
+  const listSiteDriveItemsByPath = (siteId: string, path: string, driveId?: string) => {
+    const cleanPath = path.replace(/^\/+/, "")
+    if (driveId) {
+      return request<ODataResponse<GraphDriveItem>>(
+        "GET",
+        `/sites/${siteId}/drives/${driveId}/root:/${cleanPath}:/children`,
+      )
+    }
+    return request<ODataResponse<GraphDriveItem>>("GET", `/sites/${siteId}/drive/root:/${cleanPath}:/children`)
+  }
+
+  const searchSiteFiles = (siteId: string, query: string, driveId?: string) => {
+    if (driveId) {
+      return request<ODataResponse<GraphDriveItem>>(
+        "GET",
+        `/sites/${siteId}/drives/${driveId}/root/search(q='${encodeURIComponent(query)}')`,
+      )
+    }
+    return request<ODataResponse<GraphDriveItem>>(
+      "GET",
+      `/sites/${siteId}/drive/root/search(q='${encodeURIComponent(query)}')`,
+    )
+  }
+
   // Teams
   const listTeams = () =>
     request<ODataResponse<{ id: string; displayName?: string; description?: string }>>("GET", "/me/joinedTeams")
@@ -442,6 +491,14 @@ const createGraphClient = () => {
     downloadFile,
     downloadFileContent,
     createFolder,
+    // SharePoint
+    listFollowedSites,
+    searchSites,
+    getSite,
+    listSiteDrives,
+    listSiteDriveItems,
+    listSiteDriveItemsByPath,
+    searchSiteFiles,
     // Chats
     listChats,
     listChatMessages,

@@ -135,6 +135,30 @@ export type GraphContact = {
   readonly jobTitle?: string
 }
 
+export type GraphSite = {
+  readonly id: string
+  readonly displayName?: string
+  readonly name?: string
+  readonly webUrl?: string
+  readonly description?: string
+  readonly createdDateTime?: string
+  readonly lastModifiedDateTime?: string
+  readonly siteCollection?: { readonly hostname?: string }
+}
+
+export type GraphDrive = {
+  readonly id: string
+  readonly name?: string
+  readonly description?: string
+  readonly webUrl?: string
+  readonly driveType?: string
+  readonly quota?: {
+    readonly total?: number
+    readonly used?: number
+    readonly remaining?: number
+  }
+}
+
 export type GraphDriveItem = {
   readonly id: string
   readonly name?: string

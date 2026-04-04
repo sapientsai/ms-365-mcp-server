@@ -71,6 +71,12 @@ export const TOOL_METADATA: ReadonlyArray<ToolMeta> = [
   { name: "download_file", domain: "files", readOnly: true, orgOnly: false },
   { name: "create_folder", domain: "files", readOnly: false, orgOnly: false },
   { name: "upload_file", domain: "files", readOnly: false, orgOnly: false },
+  // SharePoint
+  { name: "list_sites", domain: "files", readOnly: true, orgOnly: true },
+  { name: "get_site", domain: "files", readOnly: true, orgOnly: true },
+  { name: "list_site_drives", domain: "files", readOnly: true, orgOnly: true },
+  { name: "list_site_items", domain: "files", readOnly: true, orgOnly: true },
+  { name: "search_site_files", domain: "files", readOnly: true, orgOnly: true },
   // Chats
   { name: "list_chats", domain: "chats", readOnly: true, orgOnly: true },
   { name: "list_chat_messages", domain: "chats", readOnly: true, orgOnly: true },

@@ -17,6 +17,10 @@ export const GRAPH_SCOPES = {
   FILES_READWRITE: "Files.ReadWrite",
   FILES_READ_ALL: "Files.Read.All",
 
+  // SharePoint Sites
+  SITES_READ_ALL: "Sites.Read.All",
+  SITES_READWRITE_ALL: "Sites.ReadWrite.All",
+
   // Teams
   TEAM_READ_BASIC_ALL: "Team.ReadBasic.All",
   CHANNEL_MESSAGE_SEND: "ChannelMessage.Send",
