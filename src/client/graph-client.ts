@@ -298,6 +298,9 @@ const createGraphClient = () => {
         `/sites/${siteId}/drives/${driveId}/items/${folderId}/children`,
       )
     }
+    if (folderId) {
+      return request<ODataResponse<GraphDriveItem>>("GET", `/sites/${siteId}/drive/items/${folderId}/children`)
+    }
     if (driveId) {
       return request<ODataResponse<GraphDriveItem>>("GET", `/sites/${siteId}/drives/${driveId}/root/children`)
     }
