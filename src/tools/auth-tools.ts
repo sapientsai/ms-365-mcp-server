@@ -3,8 +3,8 @@ import type { Either } from "functype/either"
 import { Left, Right } from "functype/either"
 
 import { getAuthStatus, setAccessToken } from "../auth"
-import { getContextToken } from "../auth/token-context"
 import { listAccounts, setDefaultAccount } from "../auth/account-registry"
+import { getContextToken } from "../auth/token-context"
 import { formatAuthStatus } from "../utils/formatters"
 
 export const getAuthStatusTool = async (): Promise<Either<UserError, string>> => {
@@ -35,7 +35,9 @@ export const listAccountsTool = async (): Promise<Either<UserError, string>> => 
   if (accounts.length === 0) {
     const contextToken = getContextToken()
     if (contextToken) {
-      return Right("OAuth proxy mode — authenticated user is determined per-request via OAuth. Use `get_me` to see the current user.")
+      return Right(
+        "OAuth proxy mode — authenticated user is determined per-request via OAuth. Use `get_me` to see the current user.",
+      )
     }
     return Right("No accounts registered.")
   }
